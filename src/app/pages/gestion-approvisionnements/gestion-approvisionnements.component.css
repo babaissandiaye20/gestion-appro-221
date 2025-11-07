@@ -297,6 +297,7 @@
   align-items: center;
   gap: 0.5rem;
   margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .pagination .btn-page {
@@ -331,6 +332,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1.5rem;
+  margin-top: 2rem;
 }
 
 .stats-section .stat-card {
@@ -418,3 +420,18 @@
     padding: 0.625rem 0.5rem;
   }
 }
+.actions-cell{display:flex;gap:8px;align-items:center}
+.btn-square{
+  width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;
+  border:0;border-radius:6px;color:#fff;cursor:pointer;
+  box-shadow:0 1px 2px rgba(16,24,40,.06),0 1px 3px rgba(16,24,40,.1);
+  transition:transform .08s ease, filter .12s ease;
+}
+.btn-square:active{transform:translateY(1px)}
+.btn-square svg{display:block}
+.btn-square.is-view{background:#2f7cf6}
+.btn-square.is-view:hover{filter:brightness(.95)}
+.btn-square.is-edit{background:#f0ad00;color:#1f2937}
+.btn-square.is-edit:hover{filter:brightness(.95)}
+.btn-square.is-delete{background:#e03131}
+.btn-square.is-delete:hover{filter:brightness(.95)}

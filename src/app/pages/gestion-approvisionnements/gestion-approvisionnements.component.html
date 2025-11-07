@@ -9,12 +9,12 @@
   <!-- Filtres et recherche -->
   <div class="filters-section">
     <h2 class="section-title">Filtres et recherche</h2>
-    
+
     <form [formGroup]="filterForm" class="filters-form">
       <div class="filters-row">
         <div class="filter-group search-group">
-          <input 
-            type="text" 
+          <input
+            type="text"
             formControlName="recherche"
             class="form-control search-input"
             placeholder="Rechercher..."
@@ -46,8 +46,8 @@
       <div class="filters-row">
         <div class="filter-group">
           <label>Du</label>
-          <input 
-            type="date" 
+          <input
+            type="date"
             formControlName="dateDebut"
             class="form-control"
           />
@@ -55,23 +55,23 @@
 
         <div class="filter-group">
           <label>Au</label>
-          <input 
-            type="date" 
+          <input
+            type="date"
             formControlName="dateFin"
             class="form-control"
           />
         </div>
 
         <div class="filter-actions">
-          <button 
-            type="button" 
+          <button
+            type="button"
             class="btn btn-primary btn-filter"
             (click)="appliquerFiltres()"
           >
             🔍 Filtrer
           </button>
-          <button 
-            type="button" 
+          <button
+            type="button"
             class="btn btn-secondary btn-reset"
             (click)="reinitialiserFiltres()"
           >
@@ -84,6 +84,34 @@
 
   <!-- Tableau des approvisionnements -->
   <div class="table-section">
+    <!-- Pagination -->
+    <div class="pagination" *ngIf="totalPages > 1">
+      <button
+        class="btn-page"
+        (click)="changerPage(currentPage - 1)"
+        [disabled]="currentPage === 1"
+      >
+        Précédent
+      </button>
+
+      <button
+        *ngFor="let page of pages"
+        class="btn-page"
+        [class.active]="page === currentPage"
+        (click)="changerPage(page)"
+      >
+        {{ page }}
+      </button>
+
+      <button
+        class="btn-page"
+        (click)="changerPage(currentPage + 1)"
+        [disabled]="currentPage === totalPages"
+      >
+        Suivant
+      </button>
+    </div>
+
     <div class="table-wrapper">
       <table class="approvisionnements-table">
         <thead>
@@ -109,14 +137,14 @@
             <td>{{ appro.fournisseur }}</td>
             <td>
               <div class="articles-badges">
-                <span 
-                  *ngFor="let article of appro.articles.slice(0, 3)" 
+                <span
+                  *ngFor="let article of appro.articles.slice(0, 3)"
                   class="badge badge-article"
                 >
                   {{ article }}
                 </span>
-                <span 
-                  *ngIf="appro.articles.length > 3" 
+                <span
+                  *ngIf="appro.articles.length > 3"
                   class="badge badge-more"
                 >
                   +{{ appro.articles.length - 3 }}
@@ -125,7 +153,7 @@
             </td>
             <td class="montant-cell">{{ appro.montantTotal | number:'1.0-0' }} FCFA</td>
             <td>
-              <span 
+              <span
                 class="badge badge-statut"
                 [ngClass]="{
                   'badge-recu': appro.statut === 'Reçu',
@@ -137,26 +165,24 @@
             </td>
             <td>
               <div class="actions-cell">
-                <button 
-                  class="btn-icon btn-view" 
-                  (click)="voirDetails(appro.id)"
-                  title="Voir"
-                >
-                  👁️
+                <button class="btn-square is-view" type="button"
+                        (click)="voirDetails(appro.id)" title="Voir" aria-label="Voir">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="12" cy="12" r="3" fill="currentColor"/>
+                  </svg>
                 </button>
-                <button 
-                  class="btn-icon btn-edit" 
-                  (click)="modifier(appro.id)"
-                  title="Modifier"
-                >
-                  ✏️
+                <button class="btn-square is-edit" type="button"
+                        (click)="modifier(appro.id)" title="Modifier" aria-label="Modifier">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M3 17.25V21h3.75L19.81 7.94l-3.75-3.75L3 17.25z" fill="currentColor"/>
+                  </svg>
                 </button>
-                <button 
-                  class="btn-icon btn-delete" 
-                  (click)="supprimer(appro.id)"
-                  title="Supprimer"
-                >
-                  🗑️
+                <button class="btn-square is-delete" type="button"
+                        (click)="supprimer(appro.id)" title="Supprimer" aria-label="Supprimer">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M19 6H5m2 0l1-2h8l1 2m-1 0l-1 14H9L8 6" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
                 </button>
               </div>
             </td>
@@ -164,35 +190,17 @@
         </tbody>
       </table>
     </div>
-
-    <!-- Pagination -->
-    <div class="pagination" *ngIf="totalPages > 1">
-      <button 
-        class="btn-page" 
-        (click)="changerPage(currentPage - 1)"
-        [disabled]="currentPage === 1"
-      >
-        Précédent
-      </button>
-      
-      <button 
-        *ngFor="let page of pages" 
-        class="btn-page"
-        [class.active]="page === currentPage"
-        (click)="changerPage(page)"
-      >
-        {{ page }}
-      </button>
-      
-      <button 
-        class="btn-page" 
-        (click)="changerPage(currentPage + 1)"
-        [disabled]="currentPage === totalPages"
-      >
-        Suivant
-      </button>
-    </div>
   </div>
+  <!-- Pagination — version visible tout de suite -->
+  <nav class="pagination" aria-label="Pagination">
+    <button class="btn-page" disabled>Précédent</button>
+    <button class="btn-page active">1</button>
+    <button class="btn-page">2</button>
+    <button class="btn-page">3</button>
+    <button class="btn-page">Suivant</button>
+  </nav>
+
+
 
   <!-- Statistiques -->
   <div class="stats-section">
